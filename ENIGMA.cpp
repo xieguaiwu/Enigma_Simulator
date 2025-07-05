@@ -41,7 +41,6 @@ int reflect(int drift, int thing) { //凯撒加密 ，制作字母表
 		else if (k + drift > 26)line[k + drift - 26] = k;
 	}
 	b = 64 + line[thing - 64];
-	//cout <<"凯撒"<<drift<<"位后得："<<b<<"\n";
 	return b;
 }
 
@@ -51,24 +50,20 @@ int reflect2(int drift2, int thing2) { //凯撒加密 ，制作字母表
 		else if (k + drift2 > 26)line[k] = k + drift2 - 26;
 	}
 	b = 64 + line[thing2 - 64];
-	//cout <<"凯撒"<<0-drift2<<"位后得："<<b<<"\n";
 	return b;
 }
 
 void cryp(int sty = 0) {
 	for (int i = 0; i <= org.size() - 1; i++) {
-		//cout <<"第"<<i<<"个字母";
 		a = org[i];
 		//cout <<org[i]<<"/"<<a<<"\n";
 		for (int j = 1; j <= rounds; j++) {
-			//cout <<"rs"<<j<<"是"<<rs[j]<<"\n";
 			if (sty == 0)a = reflect(rs[j], a); //加密
 			else  a = reflect2(rs[j], a);
 		}
 		wheel();
 		letter = a;
 		cry.append(1, letter);
-		//cout <<"cry:"<<cry<<"\n";
 	}
 }
 
@@ -86,7 +81,7 @@ void playc() {
 	}
 	while (1) {
 		judge = 0;
-		cout << "\n\nOriginal text/ciphertext (only in CAPITAL LETTERS):";
+		cout << "\n\nOriginal text/ciphertext (only in CAPITAL LETTERS WITHOUT SPACE):";
 		cin >> org;
 		for (int i = 0; i <= org.size() - 1; i++) {
 			a = org[i];

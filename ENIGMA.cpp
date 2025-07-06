@@ -37,14 +37,17 @@ void badint() {
 	}
 }
 
-/*void setcopy(string CF_TEXT) {
-	glob = GlobalAlloc(GMEM_FIXED,32);
-	memcpy(glob,"it works",9);
-	OpenClipboard();
+void setcopy(char* tocopy) {
+	HWND hWnd = NULL;
+	OpenClipboard(hWnd);
 	EmptyClipboard();
-	SetClipboardData(CF_TEXT,glob);
+	HANDLE hHandle = GlobalAlloc(GMEM_FIXED, 32);
+	char* pData = (char*) GlobalLock(hHandle);
+	strcpy(pData, tocopy);
+	SetClipboardData(CF_TEXT, hHandle);
+	GlobalUnlock(hHandle);
 	CloseClipboard();
-}*/
+}
 
 void wheel() {
 	rs[1]++;
@@ -140,14 +143,14 @@ void playc() {
 			colorc(2);
 			cryp(0);
 			cout << "\n\n\nencrypted result:" << cry << "\n";
-			//setcopy(cry);
+			setcopy(cry.data());
 			break;
 		}
 		if (key == down) {
 			colorc(3);
 			cryp(1);
 			cout << "\n\n\ndecoded result:" << cry << "\n";
-			//setcopy(cry);
+			setcopy(cry.data());
 			break;
 		}
 	}

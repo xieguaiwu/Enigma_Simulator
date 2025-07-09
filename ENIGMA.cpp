@@ -14,9 +14,9 @@
 
 using namespace std;
 
-const int rounds = 3; //一共设置几个轮子
+const unsigned char rounds = 3; //一共设置几个轮子
 string org, cry, tofind;
-int rs[4], a, b, c; //rs是机器每个轮子的偏移值，取值范围是1-26（偏移多少位）
+unsigned char rs[4], a, b, c; //rs是机器每个轮子的偏移值，取值范围是1-26（偏移多少位）
 char letter, key; //one by one
 bool isbadint;
 

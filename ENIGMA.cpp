@@ -16,7 +16,7 @@ using namespace std;
 
 const unsigned char rounds = 3; //一共设置几个轮子
 string org, cry, tofind;
-unsigned char rs[4], a, b, c; //rs是机器每个轮子的偏移值，取值范围是1-26（偏移多少位）
+unsigned int rs[4], a, b, c; //rs是机器每个轮子的偏移值，取值范围是1-26（偏移多少位）
 char letter, key; //one by one
 bool isbadint;
 
@@ -28,8 +28,15 @@ void colorc(int x) { //1.红 2.绿 3.蓝
 }
 
 void badint() {
-	isbadint = false;
-	if (!cin.fail())isbadint = false;
+	if (!cin.fail()) {
+		if (cin.peek() != '\n') {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			isbadint = true;
+		} else {
+			isbadint = false;
+		}
+	}
 	else {
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -142,14 +149,14 @@ void playc() {
 		if (key == up) {
 			colorc(2);
 			cryp(0);
-			cout << "\n\n\nencrypted result:" << cry << "\n";
+			cout << "\n\n\nencrypted result:" << cry << "\a\n";
 			setcopy(cry.data());
 			break;
 		}
 		if (key == down) {
 			colorc(3);
 			cryp(1);
-			cout << "\n\n\ndecoded result:" << cry << "\n";
+			cout << "\n\n\ndecoded result:" << cry << "\a\n";
 			setcopy(cry.data());
 			break;
 		}

@@ -6,9 +6,6 @@
 #include<winuser.h>
 #include<winbase.h>
 
-//接收键盘信号的宏
-#define left 'K'
-#define right 'M'
 #define up 'H'
 #define down 'P'
 
@@ -45,7 +42,7 @@ void badint() {
 }
 
 void note_clipp() {
-	cout <<"(The text has been added to your clippboard)\n";
+	cout << "(The text has been added to your clippboard)\n";
 }
 
 void setcopy(char* tocopy) {
@@ -225,13 +222,13 @@ int main() {
 	while (restart) {
 		mode_choose();
 		colorc(7);
-		cout << "AGAIN? (Press [up button] to restart, press [down button] to quit)\n";
+		cout << "AGAIN? (Press Y to restart, press N to quit)\n";
 		while (1) {
 			key = _getch();
-			if (key == up) {
+			if (key == 'Y' || key == 'y') {
 				break;
 			}
-			if (key == down) break;
+			if (key == 'N' || key == 'n') break;
 		}
 	}
 	return 0;

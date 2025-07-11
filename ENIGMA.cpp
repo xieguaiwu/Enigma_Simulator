@@ -44,6 +44,10 @@ void badint() {
 	}
 }
 
+void note_clipp() {
+	cout <<"(The text has been added to your clippboard)\n";
+}
+
 void setcopy(char* tocopy) {
 	HWND hWnd = NULL;
 	OpenClipboard(hWnd);
@@ -149,15 +153,17 @@ void playc() {
 		if (key == up) {
 			colorc(2);
 			cryp(0);
-			cout << "\n\n\nencrypted result:" << cry << "\a\n";
+			cout << "\n\n\nencrypted result:" << cry << "\n";
 			setcopy(cry.data());
+			note_clipp();
 			break;
 		}
 		if (key == down) {
 			colorc(3);
 			cryp(1);
-			cout << "\n\n\ndecoded result:" << cry << "\a\n";
+			cout << "\n\n\ndecoded result:" << cry << "\n";
 			setcopy(cry.data());
+			note_clipp();
 			break;
 		}
 	}

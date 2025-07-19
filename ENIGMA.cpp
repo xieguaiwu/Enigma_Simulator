@@ -3,8 +3,6 @@
 #include<ios>
 #include<limits>
 #include<windows.h>
-#include<winuser.h>
-#include<winbase.h>
 
 #define up 'H'
 #define down 'P'

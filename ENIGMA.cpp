@@ -44,15 +44,19 @@ void note_clipp() {
 }
 
 void setcopy(char* tocopy) {
-	HWND hWnd = NULL;
-	OpenClipboard(hWnd);
-	EmptyClipboard();
-	HANDLE hHandle = GlobalAlloc(GMEM_FIXED, 32);
-	char* pData = (char*) GlobalLock(hHandle);
-	strcpy(pData, tocopy);
-	SetClipboardData(CF_TEXT, hHandle);
-	GlobalUnlock(hHandle);
-	CloseClipboard();
+	if (!OpenClipboard(nullptr)) return;
+    EmptyClipboard();
+    size_t len = strlen(tocopy) + 1;
+    HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+    if (hMem) {
+        char* pMem = static_cast<char*>(GlobalLock(hMem));
+        if (pMem) {
+            strcpy_s(pMem, len, tocopy);
+            GlobalUnlock(hMem);
+            SetClipboardData(CF_TEXT, hMem);
+        }
+    }
+    CloseClipboard();
 }
 
 void wheel() {

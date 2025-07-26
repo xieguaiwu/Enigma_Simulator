@@ -1,8 +1,13 @@
 #include<iostream>
-#include<conio.h>
 #include<ios>
 #include<limits>
-#include<windows.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <termios.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#endif
 
 #define up 'H'
 #define down 'P'
@@ -14,6 +19,22 @@ string org, cry, tofind;
 unsigned int rs[4], a, b, c; //rs是机器每个轮子的偏移值，取值范围是1-26（偏移多少位）
 char letter, key; //one by one
 bool isbadint;
+
+#ifdef _WIN32
+#include <conio.h>
+#else
+int getch() {
+    struct termios oldt, newt;
+    int ch;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    return ch;
+}
+#endif
 
 void colorc(int x) { //1.红 2.绿 3.蓝
 	if (x == 1)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);

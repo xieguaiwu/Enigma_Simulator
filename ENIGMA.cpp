@@ -24,23 +24,43 @@ bool isbadint;
 #include <conio.h>
 #else
 int getch() {
-    struct termios oldt, newt;
-    int ch;
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    ch = getchar();
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return ch;
+	struct termios oldt, newt;
+	int ch;
+	tcgetattr(STDIN_FILENO, &oldt);
+	newt = oldt;
+	newt.c_lflag &= ~(ICANON | ECHO);
+	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	ch = getchar();
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	return ch;
 }
 #endif
 
 void colorc(int x) { //1.红 2.绿 3.蓝
+#ifdef _WIN32
 	if (x == 1)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
 	if (x == 2)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
 	if (x == 3)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
 	if (x == 7)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+#else
+	switch (x) {
+	case 1:  // 红色
+		std::cout << "\033[1;31m";  // 亮红色
+		break;
+	case 2:  // 绿色
+		std::cout << "\033[1;32m";  // 亮绿色
+		break;
+	case 3:  // 蓝色
+		std::cout << "\033[1;34m";  // 亮蓝色
+		break;
+	case 7:  // 白色（重置）
+		std::cout << "\033[0m";     // 重置所有属性
+		break;
+	default:
+		std::cout << "\033[0m";     // 默认重置
+		break;
+	}
+#endif
 }
 
 void badint() {
@@ -66,18 +86,18 @@ void note_clipp() {
 
 void setcopy(char* tocopy) {
 	if (!OpenClipboard(nullptr)) return;
-    EmptyClipboard();
-    size_t len = strlen(tocopy) + 1;
-    HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
-    if (hMem) {
-        char* pMem = static_cast<char*>(GlobalLock(hMem));
-        if (pMem) {
-            strcpy_s(pMem, len, tocopy);
-            GlobalUnlock(hMem);
-            SetClipboardData(CF_TEXT, hMem);
-        }
-    }
-    CloseClipboard();
+	EmptyClipboard();
+	size_t len = strlen(tocopy) + 1;
+	HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+	if (hMem) {
+		char* pMem = static_cast<char*>(GlobalLock(hMem));
+		if (pMem) {
+			strcpy_s(pMem, len, tocopy);
+			GlobalUnlock(hMem);
+			SetClipboardData(CF_TEXT, hMem);
+		}
+	}
+	CloseClipboard();
 }
 
 void wheel() {

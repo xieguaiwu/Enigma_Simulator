@@ -42,24 +42,6 @@ void colorc(int x) { //1.红 2.绿 3.蓝
 	if (x == 2)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
 	if (x == 3)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
 	if (x == 7)SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-#else
-	switch (x) {
-	case 1:  // 红色
-		std::cout << "\033[1;31m";  // 亮红色
-		break;
-	case 2:  // 绿色
-		std::cout << "\033[1;32m";  // 亮绿色
-		break;
-	case 3:  // 蓝色
-		std::cout << "\033[1;34m";  // 亮蓝色
-		break;
-	case 7:  // 白色（重置）
-		std::cout << "\033[0m";     // 重置所有属性
-		break;
-	default:
-		std::cout << "\033[0m";     // 默认重置
-		break;
-	}
 #endif
 }
 
@@ -81,10 +63,13 @@ void badint() {
 }
 
 void note_clipp() {
+#ifdef _WIN32
 	cout << "(The text has been added to your clippboard)\n";
+#endif
 }
 
 void setcopy(char* tocopy) {
+#ifdef _WIN32
 	if (!OpenClipboard(nullptr)) return;
 	EmptyClipboard();
 	size_t len = strlen(tocopy) + 1;
@@ -98,6 +83,7 @@ void setcopy(char* tocopy) {
 		}
 	}
 	CloseClipboard();
+#endif
 }
 
 void wheel() {
@@ -189,7 +175,7 @@ void playc() {
 	input_orgize();
 	cout << "Press [up button] to see the encrypted result, and press [down button] for the decoded result\n";
 	while (1) {
-		key = _getch();
+		key = getch();
 		if (key == up) {
 			colorc(2);
 			cryp(0);
@@ -235,7 +221,7 @@ void mode_choose() {
 	cout << "------------------------------\n";
 	cout << "The settings of rotators are:\nA) Known\nB) Unknown\n(Press a key to continue)\n";
 	while (1) {
-		key = _getch();
+		key = getch();
 		if (key == 'A' || key == 'a') {
 			playc();
 			break;
@@ -243,7 +229,7 @@ void mode_choose() {
 		if (key == 'B' || key == 'b') {
 			cout << "Is there any text to search within the decoded result? (Press [up button] to confirm, press [down button] to refuse)\n";
 			while (1) {
-				key = _getch();
+				key = getch();
 				if (key == up) {
 					while (1) {
 						cout << "Input the text to be searched:";
@@ -267,7 +253,7 @@ int main() {
 		colorc(7);
 		cout << "AGAIN? (Press Y to restart, press N to quit)\n";
 		while (1) {
-			key = _getch();
+			key = getch();
 			if (key == 'Y' || key == 'y') {
 				break;
 			}
